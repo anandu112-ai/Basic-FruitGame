@@ -82,6 +82,25 @@ animation: flash 0.5s infinite alternate;
 margin-top:20px;
 }
 
+@media(max-width:768px){
+
+#box{
+width:90%;
+padding:20px;
+}
+
+#word{
+font-size:28px;
+letter-spacing:8px;
+}
+
+button{
+font-size:14px;
+padding:8px 14px;
+}
+
+}
+
 </style>
 
 </head>
@@ -91,6 +110,7 @@ margin-top:20px;
 <div id="box">
 
 <h1>Word Puzzle</h1>
+
 <h3>Guess The Fruit 🍏</h3>
 
 <div id="score">Score: 0</div>
@@ -100,7 +120,9 @@ margin-top:20px;
 </button>
 
 <p id="word"></p>
+
 <p id="chance"></p>
+
 <p id="result"></p>
 
 <div id="keyboard"></div>
@@ -119,6 +141,7 @@ let score=0
 function createKeyboard(){
 
 let k=document.getElementById("keyboard")
+
 k.innerHTML=""
 
 for(let i=65;i<=90;i++){
@@ -126,11 +149,15 @@ for(let i=65;i<=90;i++){
 let letter=String.fromCharCode(i)
 
 let btn=document.createElement("button")
+
 btn.innerText=letter
 
 btn.onclick=function(){
+
 guess(letter)
+
 btn.disabled=true
+
 }
 
 k.appendChild(btn)
@@ -150,6 +177,7 @@ document.getElementById("bottomControls").innerHTML=""
 document.getElementById("result").innerText=""
 
 let res=await fetch("/start")
+
 let data=await res.json()
 
 secret_word=data.word.toLowerCase()
@@ -195,7 +223,8 @@ if(!display.includes("_")){
 
 score++
 
-document.getElementById("score").innerText="Score: "+score
+document.getElementById("score").innerText=
+"Score: "+score
 
 document.getElementById("result").innerText=
 "🎉 You Won! Word: "+secret_word
@@ -210,10 +239,6 @@ showNewGameButton()
 
 // LOSE
 if(chance<=0){
-
-score=0
-
-document.getElementById("score").innerText="Score: "+score
 
 document.getElementById("result").innerText=
 "💀 Game Over! Word: "+secret_word
@@ -238,10 +263,13 @@ document.getElementById("chance").innerText=
 
 function disableKeyboard(){
 
-let buttons=document.querySelectorAll("#keyboard button")
+let buttons=
+document.querySelectorAll("#keyboard button")
 
 buttons.forEach(btn=>{
+
 btn.disabled=true
+
 })
 
 }
