@@ -30,10 +30,24 @@ margin:20px;
 }
 
 button{
-padding:10px;
+padding:10px 18px;
 margin:4px;
 font-size:16px;
 cursor:pointer;
+border:none;
+border-radius:10px;
+background:#3498db;
+color:white;
+transition:0.3s;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+button:disabled{
+background:#999;
+cursor:not-allowed;
 }
 
 #score{
@@ -41,6 +55,17 @@ font-size:22px;
 margin:10px;
 font-weight:bold;
 color:#333;
+}
+
+#chance{
+font-size:20px;
+font-weight:bold;
+}
+
+#result{
+font-size:24px;
+font-weight:bold;
+margin-top:20px;
 }
 
 .win{
@@ -51,6 +76,10 @@ animation: flash 0.5s infinite alternate;
 0%{background:#2ecc71;}
 50%{background:#f1c40f;}
 100%{background:#e74c3c;}
+}
+
+#bottomControls{
+margin-top:20px;
 }
 
 </style>
@@ -66,13 +95,17 @@ animation: flash 0.5s infinite alternate;
 
 <div id="score">Score: 0</div>
 
-<button onclick="startGame()">Start Game</button>
-<button onclick="newGame()">New Game</button>
+<button id="startBtn" onclick="startGame()">
+🎮 Start Game
+</button>
+
 <p id="word"></p>
 <p id="chance"></p>
 <p id="result"></p>
 
 <div id="keyboard"></div>
+
+<div id="bottomControls"></div>
 
 </div>
 
@@ -103,31 +136,31 @@ btn.disabled=true
 k.appendChild(btn)
 
 }
+
 }
 
 async function startGame(){
 
 document.body.classList.remove("win")
 
+document.getElementById("startBtn").style.display="none"
+
+document.getElementById("bottomControls").innerHTML=""
+
+document.getElementById("result").innerText=""
+
 let res=await fetch("/start")
 let data=await res.json()
 
 secret_word=data.word.toLowerCase()
+
 display=Array(secret_word.length).fill("_")
+
 chance=5
 
 updateUI()
+
 createKeyboard()
-
-document.getElementById("result").innerText=""
-}
-function newGame(){
-
-document.body.classList.remove("win")
-
-document.getElementById("result").innerText=""
-
-startGame()
 
 }
 
@@ -138,47 +171,95 @@ letter=letter.toLowerCase()
 let correct=false
 
 for(let i=0;i<secret_word.length;i++){
+
 if(secret_word[i]==letter){
+
 display[i]=letter
+
 correct=true
+
 }
+
 }
 
 if(!correct){
+
 chance--
+
 }
 
 updateUI()
 
 // WIN
 if(!display.includes("_")){
+
 score++
 
 document.getElementById("score").innerText="Score: "+score
 
-document.getElementById("result").innerText="🎉 You Won! Word: "+secret_word
+document.getElementById("result").innerText=
+"🎉 You Won! Word: "+secret_word
 
 document.body.classList.add("win")
+
+disableKeyboard()
+
+showNewGameButton()
+
 }
 
 // LOSE
 if(chance<=0){
+
 score=0
 
 document.getElementById("score").innerText="Score: "+score
 
-document.getElementById("result").innerText="💀 Game Over! Word: "+secret_word
+document.getElementById("result").innerText=
+"💀 Game Over! Word: "+secret_word
+
+disableKeyboard()
+
+showNewGameButton()
+
 }
 
 }
 
 function updateUI(){
-document.getElementById("word").innerText=display.join(" ")
-document.getElementById("chance").innerText="Chance: "+chance
+
+document.getElementById("word").innerText=
+display.join(" ")
+
+document.getElementById("chance").innerText=
+"Chance: "+chance
+
+}
+
+function disableKeyboard(){
+
+let buttons=document.querySelectorAll("#keyboard button")
+
+buttons.forEach(btn=>{
+btn.disabled=true
+})
+
+}
+
+function showNewGameButton(){
+
+document.getElementById("bottomControls").innerHTML=`
+
+<button onclick="startGame()">
+🔄 New Game
+</button>
+
+`
+
 }
 
 </script>
 
 </body>
-</html>
 
+</html>
