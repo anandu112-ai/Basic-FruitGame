@@ -67,7 +67,7 @@ animation: flash 0.5s infinite alternate;
 <div id="score">Score: 0</div>
 
 <button onclick="startGame()">Start Game</button>
-
+<button onclick="newGame()">New Game</button>
 <p id="word"></p>
 <p id="chance"></p>
 <p id="result"></p>
@@ -120,6 +120,15 @@ updateUI()
 createKeyboard()
 
 document.getElementById("result").innerText=""
+}
+function newGame(){
+
+document.body.classList.remove("win")
+
+document.getElementById("result").innerText=""
+
+startGame()
+
 }
 
 function guess(letter){
