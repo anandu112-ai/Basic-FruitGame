@@ -12,7 +12,7 @@ words = [
 
 @app.get("/", response_class=HTMLResponse)
 def home():
-    with open("index.html") as f:
+    with open("index.html", encoding="utf-8") as f:
         return f.read()
 
 @app.get("/start")
