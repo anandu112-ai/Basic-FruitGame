@@ -4,7 +4,7 @@
 A simple and fun Fruit Guessing Word Puzzle game built using **FastAPI**, **HTML**, **CSS**, and **Vanilla JavaScript**.
 
 Players must guess the hidden fruit name letter by letter before running out of chances.
-
+https://basic-fruitgame.onrender.com
 ---
 
 # 🚀 Features
